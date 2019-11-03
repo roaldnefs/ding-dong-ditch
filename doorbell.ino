@@ -7,6 +7,10 @@
 // but the doorbell uses the same frequency and protocol.
 //
 // Usage:
+//   In the Arduino IDE menu under Tools >> Manage Libraries
+//   and search for 'RCSwitch' install
+//   'rc-switch by sui77 Version 2.6.2'.
+//  Alternative method:
 //   Download the .zip from the official project page and
 //   add it to your Arduino IDE:
 //   Sketch >> Include Library >> Add .ZIP Library...
@@ -20,7 +24,13 @@
 #define TX_PIN 9
 
 // Set the RCSwitch protocol used for sending the signal
-#define TX_PROTOCOL 1
+// This is the inverted version of protocol 1 in RCSwitch
+// library
+//
+// Format for protocol definitions:
+//   {pulselength, Sync bit, "0" bit, "1" bit}
+static const RCSwitch::Protocol protocol = { 350, {  1, 31 }, {  3,  1 }, {  1,  3 }, false };
+#define TX_PROTOCOL protocol
 
 // Set the numer of transmission repetitions
 #define TX_NUM_REPEAT 4
@@ -28,13 +38,9 @@
 // Set the pulse length
 #define TX_PULSE_LENGTH 320
 
-// The inverted signal received by the SDR using rtl_433 or
+// The signal received by the SDR using rtl_433 or
 // manually decoded from the raw signal
-//
-// Example:
-//   original: 1111100110101110011010111
-//   inverted: 0000011001010001100101000
-#define TX_SIGNAL "0000011001010001100101000"
+#define TX_SIGNAL "1111100110101110011010111"
 
 RCSwitch mySwitch = RCSwitch();
 
